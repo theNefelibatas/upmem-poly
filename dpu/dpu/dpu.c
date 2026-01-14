@@ -68,7 +68,7 @@ void poly_multiplication(uint32_t tid, uint32_t length) {
         mram_read(&POLYNOMIAL(2)[base], cache2[tid], n * sizeof(uint32_t));
 
         for (uint32_t j = 0; j < n; j++) {
-            uint64_t p = cache1[tid][j] * cache2[tid][j];
+            uint64_t p = (uint64_t)(cache1[tid][j]) * cache2[tid][j];
             cacheo[tid][j] = p % Q;
         }
 
