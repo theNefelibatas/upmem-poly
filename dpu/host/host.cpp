@@ -57,7 +57,11 @@ void poly_addtion() {
         ScopedTimer t(tr, "host_to_dpu_copy");
         system.copy(_STR(POLYNOMIAL(1)), in1);
         system.copy(_STR(POLYNOMIAL(2)), in2);
-        system.copy("DPU_INPUT_ARGUMENTS", args);
+        uint32_t d = 0;
+        for (auto &dpu : system.dpus()) {
+            dpu->copy("DPU_INPUT_ARGUMENTS", std::vector<dpu_args_t>(1, args[d]));
+            d++;
+        }
     }
 
     {
