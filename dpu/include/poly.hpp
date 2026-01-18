@@ -10,12 +10,20 @@ enum class PolyFormat {
 };
 
 struct PolyParams {
-    uint32_t n;
-    uint32_t q;
+    uint32_t n;     // size
+    uint32_t q;     // modulus
     PolyFormat fmt;
 
     constexpr PolyParams(uint32_t n_, uint32_t q_, PolyFormat f = PolyFormat::COEFFICIENT)
         : n(n_), q(q_), fmt(f) {}
+
+    bool operator==(const PolyParams& other) const {
+        return (n == other.n) && (q == other.q) && (fmt == other.fmt);
+    }
+
+    bool operator!=(const PolyParams& other) const {
+        return (n != other.n) || (q != other.q) || (fmt != other.fmt);
+    }
 };
 
 class IRandomGenerator {
@@ -75,7 +83,7 @@ public:
     uint32_t operator[](uint32_t i) const { return coeffs_.at(i); }
 
     bool operator==(const Poly& other) const {
-        if (params_.n != other.params_.n || params_.q != other.params_.q) return false;
+        if (params_ != other.params_) return false;
         return coeffs_ == other.coeffs_;
     }
 
@@ -104,7 +112,7 @@ private:
     std::vector<uint32_t> coeffs_;
 
     void CheckCompatible(const Poly& other, const char* op) const {
-        if (params_.n != other.params_.n || params_.q != other.params_.q) {
+        if (params_ != other.params_) {
             throw std::runtime_error(std::string("Poly: incompatible params for ") + op);
         }
     }

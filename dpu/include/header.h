@@ -7,6 +7,11 @@
 #define POLY_SIZE (65536)
 #define Q (65536 + 1)
 
+typedef enum op_t {
+    ADD,
+    MUL,
+} op_t;
+
 typedef struct dpu_args_t {
     uint32_t length;
 } dpu_args_t;
